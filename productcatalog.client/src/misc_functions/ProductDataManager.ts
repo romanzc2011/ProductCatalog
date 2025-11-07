@@ -10,11 +10,21 @@ async function getProductsBySKU(sku: string): Promise<Products> {
     return res.json();
 }
 
-export function useProducts(sku: string) {
+//async function getAllProducts() {
+    
+//}
+
+export function useProductsBySKUs(sku: string) {
     // Fetch products from react query
     return useQuery({
         queryKey: ['products', sku],
         queryFn: () => getProductsBySKU(sku),
         enabled: !!sku, // only run query if sku is provided
     });
+}
+
+export function useAllProducts() {
+    return useQuery({
+        queryKey: ['products'],
+    })
 }
