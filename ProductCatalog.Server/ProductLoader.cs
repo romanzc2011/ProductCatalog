@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks.Dataflow;
 
 namespace ProductCatalog;
 
@@ -16,7 +17,7 @@ public class Product
     /**********************************************************/
     private string _sku = string.Empty;
     private string _category = string.Empty;
-    private string _price;
+    private string _price = string.Empty;
     private int _length;
     private int _width;
     private string _description = string.Empty;
@@ -24,12 +25,12 @@ public class Product
     /**********************************************************/
     // GETTERS & SETTERS
     /**********************************************************/
-    public string Sku { get => _sku; set => _sku = value; }
-    public string Category { get => _category; set => _category = value; }
-    public string Price { get => _price; set => _price = value; }
-    public int Width { get => _width; set => _width = value; }
-    public int Length { get => _length; set => _length = value; }
-    public string Description { get => _description; set => _description = value; }
+    public string sku { get => _sku; set => _sku = value; }
+    public string category { get => _category; set => _category = value; }
+    public string price { get => _price; set => _price = value; }
+    public int width { get => _width; set => _width = value; }
+    public int length { get => _length; set => _length = value; }
+    public string description { get => _description; set => _description = value; }
 }
 
 /**********************************************************/
@@ -38,7 +39,7 @@ public class Product
 /**********************************************************/
 public class ProductList : List<Product>
 {
-    private static string _filePath = @"C:\Users\romancampbell\source\repos\ProductCatalog\data\output.jsonl";
+    private static string _filePath = @"C:\Users\romancampbell\source\repos\csharp_projects\StrExamples\data\output.jsonl";
 
     public static void LoadFromJsonl()
     {
@@ -49,18 +50,28 @@ public class ProductList : List<Product>
             //return productList;
         }
 
+        // Set up JSON serializer options
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         List<Product> productObjects = new List<Product>();
 
         try
         {
+            // Read lines from output.jsonl and deserialize and prep for writing to database
             foreach (string line in File.ReadLines(_filePath))
             {
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     try
                     {
-                        Product? obj = JsonSerializer.Deserialize<Product>(line);
-                        productObjects.Add(obj);
+                        Product? obj = JsonSerializer.Deserialize<Product>(line, options);
+                        if (obj != null)
+                        {
+                            productObjects.Add(obj);
+                        }
                     }
                     catch (JsonException ex)
                     {
@@ -69,13 +80,10 @@ public class ProductList : List<Product>
                 }
             }
 
-            // Test writelines
+            // Write data from output.jsonl to database
             foreach (var product in productObjects)
             {
-                Console.WriteLine(product.Sku);
-                Console.WriteLine(product.Category);
-                Console.WriteLine(product.Price);
-                Console.WriteLine(product.Length);
+                
             }
         }
         catch (IOException ex)
