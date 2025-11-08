@@ -37,10 +37,15 @@ public class Product
 /**********************************************************/
 // PRODUCT LIST CLASS
 // Loading the actual products from JSONL file
+//  var dbPath = Path.Combine(AppContext.BaseDirectory, "product_catalog.db");
 /**********************************************************/
 public class ProductList : List<Product>
 {
-    private static string _filePath = @"C:\Users\romancampbell\source\repos\csharp_projects\StrExamples\data\output.jsonl";
+    private static string _filePath = string.Empty;
+    public void SetFilePath(string filePath)
+    {
+        _filePath = filePath;
+    }
 
     public static void LoadFromJsonl()
     {
