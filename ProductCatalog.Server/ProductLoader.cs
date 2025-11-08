@@ -1,3 +1,4 @@
+using ProductCatalog.Server;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,6 +58,7 @@ public class ProductList : List<Product>
         };
 
         List<Product> productObjects = new List<Product>();
+        var dbManager = new DatabaseManager();
 
         try
         {
@@ -71,19 +73,19 @@ public class ProductList : List<Product>
                         if (obj != null)
                         {
                             productObjects.Add(obj);
+                            dbManager.InsertAllProducts(productObjects);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Deserialized object is null for line: {line}");
                         }
                     }
+
                     catch (JsonException ex)
                     {
                         Console.WriteLine($"Error deserializing JSON line: {line} - {ex.Message}");
                     }
                 }
-            }
-
-            // Write data from output.jsonl to database
-            foreach (var product in productObjects)
-            {
-                
             }
         }
         catch (IOException ex)
