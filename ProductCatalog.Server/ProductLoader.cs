@@ -8,21 +8,21 @@ using System.Threading.Tasks.Dataflow;
 
 namespace ProductCatalog;
 /**********************************************************/
-// PRODUCT LIST CLASS
+// PRODUCT LOADER CLASS
 // Loading the actual products from JSONL file
 //  var dbPath = Path.Combine(AppContext.BaseDirectory, "product_catalog.db");
 /**********************************************************/
 public class ProductLoader : List<Product>
 {
     // Load from a provided file path and use the provided DatabaseManager (single source of truth)
-    public static List<Product> LoadFromJsonl(string filePath, DatabaseManager dbManager)
+    public static List<Product> LoadFromJsonl(string filePath)
     {
-        var productList = new ProductLoader();
+        DatabaseManager dbManager = new DatabaseManager($"Data Source={Path.Combine(AppContext.BaseDirectory, "product_catalog.db")}");
 
+        // Check if filepath is valid
         if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
         {
             Console.WriteLine($"File not found: {filePath}");
-            return productList;
         }
 
         // Set up JSON serializer options
@@ -38,6 +38,7 @@ public class ProductLoader : List<Product>
             // Read lines from output.jsonl and deserialize and prep for writing to database
             foreach (string line in File.ReadLines(filePath))
             {
+                // Skip empty lines
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
 
