@@ -36,7 +36,7 @@ namespace ProductCatalog.Server
                     {
                         var insertCommand = connection.CreateCommand();
                         insertCommand.CommandText = @"
-                            INSERT INTO Products (Sku, Category, Price, Width, Length, Description)
+                            INSERT INTO products (Sku, Category, Price, Width, Length, Description)
                             VALUES ($sku, $category, $price, $width, $length, $description)";
                         foreach (var product in products)
                         {

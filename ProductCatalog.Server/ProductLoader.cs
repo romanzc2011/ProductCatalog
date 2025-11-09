@@ -20,7 +20,12 @@ public class ProductLoader : List<Product>
         DatabaseManager dbManager = new DatabaseManager($"Data Source={Path.Combine(AppContext.BaseDirectory, "product_catalog.db")}");
 
         // Check if filepath is valid
-        if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            Console.WriteLine($"File not found: {filePath}");
+        }
+
+        if (!File.Exists(filePath))
         {
             Console.WriteLine($"File not found: {filePath}");
         }

@@ -3,10 +3,20 @@ using ProductCatalog.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("ProductCatalog");
-string cfgPath = builder.Configuration["DataFiles:ProductsJsonl"] ?? "data/output.jsonl";
-string cfgFilePath = Path.IsPathRooted(cfgPath)
-    ? cfgPath
-    : Path.Combine(AppContext.BaseDirectory, cfgPath);
+
+// Read config file path from env
+string? cfgFilePath = builder.Configuration["DataFiles:ProductsJsonl"];
+if (string.IsNullOrEmpty(cfgFilePath))
+{
+    cfgFilePath = @"../data/output.jsonl";
+}
+
+// Resolve absolute path
+string resolvedCfgFilePath = Path.IsPathRooted(cfgFilePath)
+    ? cfgFilePath
+    : Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, cfgFilePath));
+
+Console.WriteLine($"Using product JSONL file path: {resolvedCfgFilePath}");
 
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -16,9 +26,6 @@ if (string.IsNullOrEmpty(connectionString))
 // Initialize DatabaseManager
 DatabaseManager dbManager = new DatabaseManager(connectionString);
 
-// Config output path
-
-
 var app = builder.Build();
 
 // Check database tables and insert
@@ -27,8 +34,16 @@ bool isEmpty = dbManager.IsProductsTableEmpty();
 
 if (isEmpty)
 {
-    // Load products from JSONL file and insert into database
-    List<Product> products = ProductLoader.LoadFromJsonl(configuredFilePath);
+    if (File.Exists(cfgFilePath))
+    {
+        // Load products from JSONL file and insert into database
+        List<Product> products = ProductLoader.LoadFromJsonl(cfgFilePath);
+        dbManager.InsertAllProducts(products);
+    }
+    else
+    {
+        Console.WriteLine($"Product JSONL file not found at path: {cfgFilePath}");
+    }
 }
 
 app.UseRouting();
