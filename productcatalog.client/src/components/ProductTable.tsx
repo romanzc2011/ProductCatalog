@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
-import { Products } from "../types/ProductTypes";
+import { useGetAllProducts } from "../misc_functions/ProductDataManager";
 
-/************************************************************** */
+/************************************************************* */
 // DATA COLUMNS
+/************************************************************* */
 const dataColumns: GridColDef[] = [
     { field: 'sku', headerName: 'SKU', width: 150 },
     { field: 'category', headerName: 'CATEGORY', width: 150 },
@@ -13,15 +14,21 @@ const dataColumns: GridColDef[] = [
     { field: 'description', headerName: 'DESCRIPTION', width: 300 }
 ];
 
-interface ProductTableProps {
-    products: Products[];
-}
+export default function ProductTable() {
+    const { data, isLoading, isError, error } = useGetAllProducts();
 
-export default function ProductTable({ products }: ProductTableProps) {
+    if (isLoading) {
+        return <Box>Loading...</Box>;
+    }
+    if (isError) {
+        return <Box>Error: {(error as Error)}</Box>
+    }
+
+    const rows = (data ?? []);
     return (
         <Box sx={{ height: 500, width: '100%' }}>
             <DataGrid
-                rows={products}
+                rows={rows}
                 getRowId={(row) => row.sku}
                 rowHeight={38}
                 checkboxSelection

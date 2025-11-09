@@ -53,3 +53,5 @@ app.MapGet("/api/GetAllProducts", () =>
     var products = dbManager.GetAllProducts();
     return Results.Ok(products);
 });
+
+app.Run();

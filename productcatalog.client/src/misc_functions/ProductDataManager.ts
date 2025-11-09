@@ -1,30 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Products } from '../types/ProductTypes';
 
-async function getProductsBySKU(sku: string): Promise<Products> {
-    const res = await fetch(`/api/products/${sku}`);
-    if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`Error fetching products: ${errorText}`);
-    }
-    return res.json();
-}
+/**
+ * Fetch all products from the API.
+ * @returns A promise that resolves to an array of products.
+ */
+export function useGetAllProducts() {
+    const getAllProducts = async (): Promise<Products[]> => {
+        const res = await fetch("/api/GetAllProducts");
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`Error fetching all products: ${errorText}`);
+        }
+        return res.json();
+    };
 
-//async function getAllProducts() {
-    
-//}
-
-export function useProductsBySKUs(sku: string) {
-    // Fetch products from react query
-    return useQuery({
-        queryKey: ['products', sku],
-        queryFn: () => getProductsBySKU(sku),
-        enabled: !!sku, // only run query if sku is provided
-    });
-}
-
-export function useAllProducts() {
     return useQuery({
         queryKey: ['products'],
-    })
+        queryFn: getAllProducts,
+    });
 }
