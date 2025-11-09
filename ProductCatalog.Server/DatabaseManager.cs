@@ -7,6 +7,7 @@ namespace ProductCatalog.Server
     public class DatabaseManager
     {
         private readonly string _connectionString;
+        public string connectionString { get => _connectionString; }
 
         /**********************************************************/
         // CONSTRUCTOR

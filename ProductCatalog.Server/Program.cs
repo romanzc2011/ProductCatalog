@@ -25,7 +25,7 @@ bool isEmpty = dbManager.IsProductsTableEmpty();
 if (isEmpty)
 {
     // Load products from JSONL file and insert into database
-    var products = ProductList.LoadFromJsonl();
+    var products = ProductLoader.LoadFromJsonl();
 }
 
 app.UseRouting();
