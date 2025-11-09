@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useGetAllProducts } from "../misc_functions/ProductDataManager";
+import type { Products } from "../types/ProductTypes";
 
 /************************************************************* */
 // DATA COLUMNS
@@ -21,10 +22,10 @@ export default function ProductTable() {
         return <Box>Loading...</Box>;
     }
     if (isError) {
-        return <Box>Error: {(error as Error)}</Box>
+        return <Box color="error.main">Error: {(error as Error)?.message}</Box>
     }
 
-    const rows = (data ?? []);
+    const rows: Products[] = Array.isArray(data) ? data : [];
     return (
         <Box sx={{ height: 500, width: '100%' }}>
             <DataGrid
