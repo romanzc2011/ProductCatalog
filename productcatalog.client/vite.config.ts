@@ -65,9 +65,6 @@ export default defineConfig({
       // '^/weatherforecast': { target, secure: false, changeOrigin: true },
     },
     port: parseInt(env.DEV_SERVER_PORT || '50161'),
-    https: {
-      key: fs.readFileSync(keyFilePath),
-      cert: fs.readFileSync(certFilePath),
-    },
+    // Serve over HTTP for local dev (disable HTTPS) — omit https configuration entirely
   },
 });

@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import ProductTable from './components/ProductTable';
 import Header from './components/Header';
 
+
 function App() {
     return (
         <Box sx={{
@@ -10,6 +11,7 @@ function App() {
             flexDirection: 'column',
             height: '100vh',
             width: '100%',
+            marginTop: 12,
             backgroundColor: '#818181ff'
         }}>
             <Header />

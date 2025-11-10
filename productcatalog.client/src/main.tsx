@@ -4,14 +4,29 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from 'react-dom/client';
 import "./css_styles/index.css";
 import App from './App.tsx';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import '@mui/x-data-grid/themeAugmentation';
+
+const theme = createTheme({
+    components: {
+        MuiDataGrid: {
+            styleOverrides: {
+                columnHeader: { fontWeight: 'bold' },
+                columnHeaderTitle: { fontWeight: 'bold' }
+            }
+        }
+    }
+});
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
-        <App />
-        <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </StrictMode>,
+            <ThemeProvider theme={theme}>
+                <App />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
+        </QueryClientProvider>
+    </StrictMode>,
 )
