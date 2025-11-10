@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Products } from '../types/ProductTypes';
+import { useEffect, useState } from "react";
 
 /**
  * Fetch all products from the API.
@@ -20,3 +21,19 @@ export function useGetAllProducts() {
         queryFn: getAllProducts,
     });
 }
+
+/************************************************************************/
+// USE DEBOUNCE
+/************************************************************************/
+/* Simple debounce to allow changes to take effect */
+export function useDebounce<T>(value: T, delay: number = 300) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => setDebouncedValue(value), delay);
+        return () => clearTimeout(handler);
+    }, [value, delay]);
+    return debouncedValue;
+}
+
+

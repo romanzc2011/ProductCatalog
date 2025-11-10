@@ -2,19 +2,22 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
-import { useGetAllProducts } from "../api_functions/ProductDataManager";
+import type { SxProps, Theme } from "@mui/material/styles";
+import { useGetAllProducts } from "../hooks/ProductDataManager";
 import type { Products } from "../types/ProductTypes";
+import SearchBar from "./SearchBar";
+import { cellRowStyles, headerStyles, footerStyles, paginationStyles } from "../css_styles/DataGridStyles";
 
 
 /************************************************************* */
 // DATA COLUMNS
 /************************************************************* */
 const dataColumns: GridColDef[] = [
-    { field: 'sku', headerName: 'SKU', width: 150 },
-    { field: 'category', headerName: 'CATEGORY', width: 150 },
-    { field: 'price', headerName: 'PRICE', width: 150 },
-    { field: 'length', headerName: 'LENGTH', width: 150 },
-    { field: 'description', headerName: 'DESCRIPTION', width: 300 }
+    { field: 'sku', headerName: 'SKU', sortable: true, width: 150 },
+    { field: 'category', headerName: 'CATEGORY', sortable: true, width: 150 },
+    { field: 'price', headerName: 'PRICE', sortable: true, width: 150 },
+    { field: 'length', headerName: 'LENGTH', sortable: true, width: 150 },
+    { field: 'description', headerName: 'DESCRIPTION', sortable: true, width: 300 }
 ];
 
 export default function ProductTable() {
@@ -33,7 +36,24 @@ export default function ProductTable() {
 
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
-            <DataGrid
+            {/**********************************************/}
+            {/* SEARCH BAR */}
+            {/**********************************************/}
+            <Box sx={{ mb: 2 }} >
+                <SearchBar />
+            </Box>
+
+            {/**********************************************/}
+            {/* DATA GRID TABLE */}
+            {/**********************************************/}
+            <Box sx={{ flex: 1 }}>
+                <DataGrid
+                sx={{
+                    ...cellRowStyles,
+                    ...headerStyles,
+                    ...footerStyles,
+                    ...paginationStyles
+                } as SxProps<Theme>}
                 rows={rows}
                 getRowId={(row) => row.sku}
                 rowHeight={38}
@@ -43,6 +63,7 @@ export default function ProductTable() {
                 onPaginationModelChange={setPaginationModel}
                 pageSizeOptions={[25, 50, 100]}
             />
+            </Box>
         </Box>
     );
 }
