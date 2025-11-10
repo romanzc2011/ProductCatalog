@@ -1,6 +1,7 @@
 import './css_styles/App.css';
 import { Box } from "@mui/material";
 import ProductTable from './components/ProductTable';
+import Header from './components/Header';
 
 function App() {
     return (
@@ -9,11 +10,9 @@ function App() {
             flexDirection: 'column',
             height: '100vh',
             width: '100%',
-            backgroundColor: '#f5f5f5'
+            backgroundColor: '#818181ff'
         }}>
-            <header className="App-header">
-                <h1>Product Catalog</h1>
-            </header>
+            <Header />
             <ProductTable />
         </Box>
     );
