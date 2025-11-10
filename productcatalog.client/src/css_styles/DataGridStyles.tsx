@@ -5,7 +5,8 @@ export const cellRowStyles: SxProps<Theme> = {
 	"& .MuiDataGrid-cell": {
 		display: "flex",
 		alignItems: "center",
-		justifyContent: "center",
+		justifyContent: "flex-start",
+		textAlign: "left",
 		color: "white !important",
 		fontSize: "0.95rem !important"
 	},
@@ -41,6 +42,11 @@ export const headerStyles: SxProps<Theme> = {
 	"& .MuiDataGrid-columnHeaders, .MuiDataGrid-columnHeader": {
 		background: "linear-gradient(to top, #2c2c2c, #800000) !important",
 		color: "white",
+	},
+	// Ensure header title aligns left
+	"& .MuiDataGrid-columnHeaderTitleContainer": {
+		justifyContent: "flex-start",
+		textAlign: "left",
 	},
 	"& .MuiDataGrid-columnHeaderTitle": {
 		fontWeight: "bold",

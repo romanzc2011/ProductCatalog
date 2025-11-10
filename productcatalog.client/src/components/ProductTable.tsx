@@ -13,11 +13,12 @@ import { cellRowStyles, headerStyles, footerStyles, paginationStyles } from "../
 // DATA COLUMNS
 /************************************************************* */
 const dataColumns: GridColDef[] = [
-    { field: 'sku', headerName: 'SKU', sortable: true, width: 150 },
-    { field: 'category', headerName: 'CATEGORY', sortable: true, width: 150 },
-    { field: 'price', headerName: 'PRICE', sortable: true, width: 150 },
-    { field: 'length', headerName: 'LENGTH', sortable: true, width: 150 },
-    { field: 'description', headerName: 'DESCRIPTION', sortable: true, width: 300 }
+    { field: 'sku', headerName: 'SKU', sortable: true, minWidth: 140, headerAlign: 'left', align: 'left' },
+    { field: 'category', headerName: 'CATEGORY', sortable: true, width: 160, headerAlign: 'left', align: 'left' },
+    { field: 'price', headerName: 'PRICE', sortable: true, width: 120, headerAlign: 'left', align: 'left' },
+    { field: 'length', headerName: 'LENGTH', sortable: true, width: 120, headerAlign: 'left', align: 'left' },
+    // Make DESCRIPTION consume remaining horizontal space
+    { field: 'description', headerName: 'DESCRIPTION', sortable: true, flex: 1, minWidth: 300, headerAlign: 'left', align: 'left' }
 ];
 
 export default function ProductTable() {
