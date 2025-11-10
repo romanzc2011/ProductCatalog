@@ -7,7 +7,17 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import '@mui/x-data-grid/themeAugmentation';
 
 const theme = createTheme({
+    typography: {
+        fontFamily: 'Play, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+    },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    fontFamily: 'Play, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+                },
+            },
+        },
         MuiDataGrid: {
             styleOverrides: {
                 columnHeader: { fontWeight: 'bold' },

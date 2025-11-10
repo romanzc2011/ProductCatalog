@@ -8,7 +8,6 @@ import type { Products } from "../types/ProductTypes";
 import SearchBar from "./SearchBar";
 import { cellRowStyles, headerStyles, footerStyles, paginationStyles } from "../css_styles/DataGridStyles";
 
-
 /************************************************************* */
 // DATA COLUMNS
 /************************************************************* */
@@ -21,6 +20,10 @@ const dataColumns: GridColDef[] = [
     { field: 'description', headerName: 'DESCRIPTION', sortable: true, flex: 1, minWidth: 300, headerAlign: 'left', align: 'left' }
 ];
 
+/************************************************************* */
+// MAIN PRODUCT TABLE
+// Fetches product data from database to render in datagrid table
+/************************************************************* */
 export default function ProductTable() {
     const [paginationModel, setPaginationModel] = useState({ pageSize: 25, page: 0 });
     const { data, isLoading, isError, error } = useGetAllProducts();
@@ -36,7 +39,7 @@ export default function ProductTable() {
     const rows: Products[] = Array.isArray(data) ? data : [];
 
     return (
-        <Box sx={{ height: '100%', width: '100%' }}>
+        <Box sx={{ height: '100%', width: '100%', backgroundColor: '#212528' }}>
             {/**********************************************/}
             {/* SEARCH BAR */}
             {/**********************************************/}

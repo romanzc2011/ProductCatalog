@@ -10,11 +10,20 @@ const API_URL = "/api/getSearchData";
 
 function SearchBar() {
     return (
-        <Box sx={{ display: 'flex', width: '25%', backgroundColor: '#363B3F', borderRadius: '3px'}}>
-            <Input sx={{ ml: 2, color: 'white', flex: 1}} />
-            <IconButton type="button" sx={{ p: 1}}>
-                <SearchIcon sx={{ color: 'white'}} />
-            </IconButton>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pt: 2 }}>
+            <span>Product Search: </span>
+            <Box sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '25%',
+                backgroundColor: '#363B3F',
+                borderRadius: '3px'
+            }}>
+                <Input sx={{ ml: 2, color: 'white', flex: 1}} />
+                <IconButton type="button" sx={{ p: 1}}>
+                    <SearchIcon sx={{ color: 'white'}} />
+                </IconButton>
+            </Box>
         </Box>
     )
 }
