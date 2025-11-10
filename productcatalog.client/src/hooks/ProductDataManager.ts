@@ -22,6 +22,21 @@ export function useGetAllProducts() {
     });
 }
 
+//******************************************************************/
+// * SEARCH DATA HOOK
+//******************************************************************/
+export async function useGetSearchData(query: string) {
+    const API_URL = "/api/getSearchData";
+    const url = `${API_URL}/search?query=${encodeURIComponent(query)}` // makes url safe string
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error fetching searched data: ${errorText}`);
+    }
+    return response.json();
+}
+
 /************************************************************************/
 // USE DEBOUNCE
 /************************************************************************/
@@ -35,5 +50,3 @@ export function useDebounce<T>(value: T, delay: number = 300) {
     }, [value, delay]);
     return debouncedValue;
 }
-
-

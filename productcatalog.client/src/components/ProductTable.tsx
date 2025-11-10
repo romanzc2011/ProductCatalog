@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
@@ -27,6 +27,11 @@ const dataColumns: GridColDef[] = [
 export default function ProductTable() {
     const [paginationModel, setPaginationModel] = useState({ pageSize: 25, page: 0 });
     const { data, isLoading, isError, error } = useGetAllProducts();
+    const [searchQuery, setSearchQuery] = useState("");
+    
+    const handleClearSearch = useCallback(() => {
+            setSearchQuery("");
+    }, []);
 
     if (isLoading) {
         return <Box>Loading...</Box>;
@@ -44,7 +49,7 @@ export default function ProductTable() {
             {/* SEARCH BAR */}
             {/**********************************************/}
             <Box sx={{ mb: 2 }} >
-                <SearchBar />
+                <SearchBar setSearchQuery={setSearchQuery} />
             </Box>
 
             {/**********************************************/}

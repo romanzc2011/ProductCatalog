@@ -1,14 +1,36 @@
 import SearchIcon from "@mui/icons-material/Search";
 import Input from '@mui/material/Input';
-import { useState } from "react";
-import { useDebounce } from '../hooks/ProductDataManager';
-import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from "react";
+import { useDebounce, useGetSearchData } from '../hooks/ProductDataManager';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Box, IconButton } from "@mui/material";
 
-const DEBOUNCE_MS = 100;
-const API_URL = "/api/getSearchData";
+// PROPS
+interface SearchBarProps {
+    setSearchQuery: (query: string) => void;
+}
 
-function SearchBar() {
+function SearchBar({setSearchQuery}: SearchBarProps) {
+    const [tanQuery, setTanQuery] = useState('');
+    const [debouncedQuery] = useDebounce(tanQuery, 100);
+
+    useEffect(() => {
+        // Not fetching yet, just allow update
+        setSearchQuery(debouncedQuery);
+    }, [debouncedQuery, setSearchQuery]);
+
+    // Fetch data from backend and put into useQuery data
+    useQuery({
+        queryKey: ['searchStr', debouncedQuery],
+        queryFn: async () => {
+            if (!debouncedQuery) return [];
+            setSearchQuery(debouncedQuery);
+            return useGetSearchData(debouncedQuery);
+        },
+        staleTime: 100,
+        placeholderData: keepPreviousData,
+    });
+    
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pt: 2 }}>
             <span>Product Search: </span>
