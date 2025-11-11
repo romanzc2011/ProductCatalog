@@ -1,32 +1,37 @@
 import React from "react";
+import { Box } from "@mui/material";
 import {
 	AppBar,
 	Toolbar,
 	Typography,
 } from "@mui/material";
+import UTCLogo from "../assets/UTC-Logo.jpg";
 
 const Header: React.FC = () => {
 	return (
-		<AppBar
-			position="fixed"
-			sx={{
-				background: "linear-gradient(to top, #2c2c2c, #800000)",
-				transition: "margin 0.3s ease",
-				boxShadow: "none",
-				width: "100%",
-				zIndex: 1300
-			}}
-		>
-			<Toolbar sx={{ minHeight: { xs: 72, sm: 96 }, px: 2 }}>
-				<Typography variant="h4" component="h1" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
-					
-					PRODUCT CATALOG
-					
+		<AppBar position="static" sx={{ background: "linear-gradient(to right, #600, #900)" }}>
+			<Toolbar sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+				<Box
+				component="img"
+				src={UTCLogo}
+				alt="United Tile Companies"
+				sx={{
+					height: 48,
+					width: "auto",
+					backgroundColor: "white", // optional: makes the white logo area blend better
+					borderRadius: 3,
+					p: 0.5,
+				}}
+				/>
+				<Typography
+					variant="h5"
+					sx={{ fontWeight: "bold", color: "white", letterSpacing: 1 }}
+				>
+				PRODUCT CATALOG
 				</Typography>
 			</Toolbar>
 		</AppBar>
 	)
-
 };
 
 export default Header;

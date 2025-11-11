@@ -11,7 +11,6 @@ function App() {
             flexDirection: 'column',
             height: '100vh',
             width: '100%',
-            marginTop: 12,
             backgroundColor: '#818181ff'
         }}>
             <Header />

@@ -6,8 +6,11 @@
 }
 
 /* Background and Font Styling */
-body {
+html, body {
+    margin: 0; /* Remove default browser margin causing top gap */
+    padding: 0;
     background-color: #212528;
     font-family: 'Play', Tahoma, sans-serif;
     color: white;
+    height: 100%;
 }

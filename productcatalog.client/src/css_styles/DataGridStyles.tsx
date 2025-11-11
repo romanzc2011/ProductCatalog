@@ -45,7 +45,7 @@ export const cellRowStyles: SxProps<Theme> = {
 // *******************************************************************************
 export const headerStyles: SxProps<Theme> = {
 	"& .MuiDataGrid-columnHeaders, .MuiDataGrid-columnHeader": {
-		background: "linear-gradient(to top, #2c2c2c, #800000) !important",
+		background: "linear-gradient(to top, #600, #900) !important",
 		color: "white",
 	},
 	// Ensure header title aligns left
