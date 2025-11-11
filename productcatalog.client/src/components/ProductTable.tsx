@@ -12,12 +12,48 @@ import { cellRowStyles, headerStyles, footerStyles, paginationStyles } from "../
 // DATA COLUMNS
 /************************************************************* */
 const dataColumns: GridColDef[] = [
-    { field: 'sku', headerName: 'SKU', sortable: true, minWidth: 140, headerAlign: 'left', align: 'left' },
-    { field: 'category', headerName: 'CATEGORY', sortable: true, width: 160, headerAlign: 'left', align: 'left' },
-    { field: 'price', headerName: 'PRICE', sortable: true, width: 120, headerAlign: 'left', align: 'left' },
-    { field: 'length', headerName: 'LENGTH', sortable: true, width: 120, headerAlign: 'left', align: 'left' },
+    {
+        field: 'sku',
+        headerName: 'SKU',
+        sortable: true,
+        minWidth: 140,
+        headerAlign: 'left',
+        align: 'left',
+    },
+    {
+        field: 'category',
+        headerName: 'CATEGORY',
+        sortable: true,
+        width: 160,
+        headerAlign: 'left',
+        align: 'left',
+    },
+    {
+        field: 'price',
+        headerName: 'PRICE',
+        sortable: true,
+        width: 120,
+        headerAlign: 'left',
+        align: 'left',
+    },
+    {
+        field: 'length',
+        headerName: 'LENGTH',
+        sortable: true,
+        width: 120,
+        headerAlign: 'left',
+        align: 'left',
+    },
     // Make DESCRIPTION consume remaining horizontal space
-    { field: 'description', headerName: 'DESCRIPTION', sortable: true, flex: 1, minWidth: 300, headerAlign: 'left', align: 'left' }
+    {
+        field: 'description',
+        headerName: 'DESCRIPTION',
+        sortable: true,
+        flex: 1,
+        minWidth: 300,
+        headerAlign: 'left',
+        align: 'left',
+    },
 ];
 
 /************************************************************* */
@@ -30,8 +66,11 @@ export default function ProductTable() {
     const { data, isLoading, isError, error } = useGetAllProducts();
     const [searchQuery, setSearchQuery] = useState("");
 
-    // Normalize rows regardless of loading/error so useMemo is always invoked
-    const rows: Products[] = Array.isArray(data) ? data as Products[] : [];
+    // convert the price to number
+    const rows: Products[] = (Array.isArray(data) ? data : []).map((p) => ({
+        ...p,
+        price: Number(p.price.toString().replace(/[^0-9.-]+/g, "")),
+    }));
 
     const filteredRows = useMemo(() => {
         if (!searchQuery) return rows;
@@ -62,10 +101,10 @@ export default function ProductTable() {
                             ...paginationStyles
                         } as SxProps<Theme>}
                         rows={filteredRows}
+                        columns={dataColumns}
                         getRowId={(row) => row.sku}
                         rowHeight={38}
                         checkboxSelection
-                        columns={dataColumns}
                         paginationModel={paginationModel}
                         onPaginationModelChange={setPaginationModel}
                         pageSizeOptions={[25, 50, 100]}
