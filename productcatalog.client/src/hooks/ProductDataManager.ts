@@ -25,7 +25,7 @@ export function useGetAllProducts() {
 //******************************************************************/
 // * SEARCH DATA HOOK
 //******************************************************************/
-export async function useGetSearchData(query: string) {
+export async function fetchSearchData(query: string) {
     const API_URL = "/api/getSearchData";
     const url = `${API_URL}/search?query=${encodeURIComponent(query)}` // makes url safe string
     const response = await fetch(url);
@@ -40,7 +40,7 @@ export async function useGetSearchData(query: string) {
 /************************************************************************/
 // USE DEBOUNCE
 /************************************************************************/
-/* Simple debounce to allow changes to take effect */
+/* Simple debounce to take a few ms to ensure the search string was processed */
 export function useDebounce<T>(value: T, delay: number = 300) {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -48,5 +48,6 @@ export function useDebounce<T>(value: T, delay: number = 300) {
         const handler = setTimeout(() => setDebouncedValue(value), delay);
         return () => clearTimeout(handler);
     }, [value, delay]);
+
     return debouncedValue;
 }

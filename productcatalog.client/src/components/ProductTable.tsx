@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect , useMemo} from "react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
@@ -25,53 +25,52 @@ const dataColumns: GridColDef[] = [
 // Fetches product data from database to render in datagrid table
 /************************************************************* */
 export default function ProductTable() {
+    // HOOKS MUST ALWAYS RUN IN SAME ORDER
     const [paginationModel, setPaginationModel] = useState({ pageSize: 25, page: 0 });
     const { data, isLoading, isError, error } = useGetAllProducts();
     const [searchQuery, setSearchQuery] = useState("");
-    
-    const handleClearSearch = useCallback(() => {
-            setSearchQuery("");
-    }, []);
 
-    if (isLoading) {
-        return <Box>Loading...</Box>;
-    }
+    // Normalize rows regardless of loading/error so useMemo is always invoked
+    const rows: Products[] = Array.isArray(data) ? data as Products[] : [];
 
-    if (isError) {
-        return <Box color="error.main">Error: {(error as Error)?.message}</Box>
-    }
-
-    const rows: Products[] = Array.isArray(data) ? data : [];
+    const filteredRows = useMemo(() => {
+        if (!searchQuery) return rows;
+        const q = searchQuery.toLowerCase();
+        return rows.filter((row) =>
+            row.sku.includes(q) ||
+            row.category.toLowerCase().includes(q) ||
+            row.length.toString().includes(q)
+        );
+    }, [rows, searchQuery]);
 
     return (
         <Box sx={{ height: '100%', width: '100%', backgroundColor: '#212528' }}>
-            {/**********************************************/}
-            {/* SEARCH BAR */}
-            {/**********************************************/}
-            <Box sx={{ mb: 2 }} >
+            <Box sx={{ mb: 2 }}>
                 <SearchBar setSearchQuery={setSearchQuery} />
             </Box>
-
-            {/**********************************************/}
-            {/* DATA GRID TABLE */}
-            {/**********************************************/}
             <Box sx={{ flex: 1 }}>
-                <DataGrid
-                sx={{
-                    ...cellRowStyles,
-                    ...headerStyles,
-                    ...footerStyles,
-                    ...paginationStyles
-                } as SxProps<Theme>}
-                rows={rows}
-                getRowId={(row) => row.sku}
-                rowHeight={38}
-                checkboxSelection
-                columns={dataColumns}
-                paginationModel={paginationModel}
-                onPaginationModelChange={setPaginationModel}
-                pageSizeOptions={[25, 50, 100]}
-            />
+                {isLoading && <Box>Loading...</Box>}
+                {isError && !isLoading && (
+                    <Box color="error.main">Error: {(error as Error)?.message}</Box>
+                )}
+                {!isLoading && !isError && (
+                    <DataGrid
+                        sx={{
+                            ...cellRowStyles,
+                            ...headerStyles,
+                            ...footerStyles,
+                            ...paginationStyles
+                        } as SxProps<Theme>}
+                        rows={filteredRows}
+                        getRowId={(row) => row.sku}
+                        rowHeight={38}
+                        checkboxSelection
+                        columns={dataColumns}
+                        paginationModel={paginationModel}
+                        onPaginationModelChange={setPaginationModel}
+                        pageSizeOptions={[25, 50, 100]}
+                    />
+                )}
             </Box>
         </Box>
     );
