@@ -2,7 +2,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import Input from '@mui/material/Input';
 import { useEffect, useState } from "react";
 import { useDebounce } from '../hooks/ProductDataManager';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Box, IconButton } from "@mui/material";
 
 // PROPS

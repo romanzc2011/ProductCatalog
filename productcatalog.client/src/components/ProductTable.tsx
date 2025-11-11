@@ -1,10 +1,10 @@
-import { useState, useCallback, useEffect , useMemo} from "react";
+import { useState, useMemo} from "react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import type { SxProps, Theme } from "@mui/material/styles";
-import { useGetAllProducts } from "../hooks/ProductDataManager";
 import type { Products } from "../types/ProductTypes";
+import { useGetAllProducts } from "../hooks/ProductDataManager";
 import SearchBar from "./SearchBar";
 import { cellRowStyles, headerStyles, footerStyles, paginationStyles } from "../css_styles/DataGridStyles";
 
@@ -35,6 +35,10 @@ const dataColumns: GridColDef[] = [
         width: 120,
         headerAlign: 'left',
         align: 'left',
+        valueFormatter: (value: number) => {
+            if (value == null) return '';
+            return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2})}`;
+        },
     },
     {
         field: 'length',
