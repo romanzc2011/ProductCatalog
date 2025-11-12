@@ -9,6 +9,9 @@ interface SearchBarProps {
     setSearchQuery: (query: string) => void;
 }
 
+/* This is the search bar that will be used to search the data from table,
+   a basic debounce is added to ensure all the chars of the search string are
+   available */
 function SearchBar({setSearchQuery}: SearchBarProps) {
     const [input, setInput] = useState('');
     const debouncedQuery = useDebounce(input, 200);

@@ -35,6 +35,8 @@ const dataColumns: GridColDef[] = [
         width: 120,
         headerAlign: 'left',
         align: 'left',
+        /* Convert the PRICE to number so the row will sort how hwo an int column
+        shouldm   */
         valueFormatter: (value: number) => {
             if (value == null) return '';
             return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2})}`;
@@ -76,6 +78,7 @@ export default function ProductTable() {
         price: Number(p.price.toString().replace(/[^0-9.-]+/g, "")),
     }));
 
+    /* This will serve as a lightweight search function */
     const filteredRows = useMemo(() => {
         if (!searchQuery) return rows;
         const q = searchQuery.toLowerCase();
